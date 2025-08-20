@@ -100,8 +100,11 @@ API_KEY = os.getenv("API_KEY", "")  # Provide default empty string
 ATHLETE_ID = os.getenv("ATHLETE_ID", "")  # Default athlete ID from .env
 USER_AGENT = "intervalsicu-mcp-server/1.0"
 
-# Accept athlete IDs that are either all digits or start with 'i' followed by digits
-if not re.fullmatch(r"i?\d+", ATHLETE_ID):
+# Accept athlete IDs that are either all digits or start with 'i' followed by digits.
+# Validate only when ATHLETE_ID is non-empty to avoid import-time errors in environments
+# where the variable may be defined but blank (e.g., CI). Tool functions validate inputs
+# again before making requests.
+if ATHLETE_ID and not re.fullmatch(r"i?\d+", ATHLETE_ID):
     raise ValueError(
         "ATHLETE_ID must be all digits (e.g. 123456) or start with 'i' followed by digits (e.g. i123456)"
     )
