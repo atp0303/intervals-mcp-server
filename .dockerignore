@@ -65,9 +65,10 @@ Dockerfile*
 docker-compose*
 .dockerignore
 
-# Other
-*.md
-LICENSE
-CONTRIBUTING.md
+# Other markdown files (but allow README.md)
+DOCKER.md
+DOCKERHUB.md
 AGENTS.md
+CONTRIBUTING.md
+LICENSE
 smithery.yaml
