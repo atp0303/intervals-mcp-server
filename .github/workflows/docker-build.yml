@@ -39,11 +39,23 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
+            type=ref,event=branch,prefix={{branch}}-
+            type=ref,event=pr,prefix=pr-
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=dev,enable={{is_default_branch}}
+          flavor: |
+            latest=auto
+          labels: |
+            org.opencontainers.image.title=Intervals.icu MCP Server
+            org.opencontainers.image.description=Model Context Protocol server for Intervals.icu
+            org.opencontainers.image.vendor=mvilanova
+            org.opencontainers.image.source={{repo_url}}
+            org.opencontainers.image.licenses=GPL-3.0-only
+            org.opencontainers.image.version={{version}}
+            org.opencontainers.image.revision={{sha}}
+            org.opencontainers.image.created={{created}}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -55,6 +67,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: false
 
       - name: Build and push development image
         uses: docker/build-push-action@v5
@@ -66,3 +79,4 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:dev
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: false
