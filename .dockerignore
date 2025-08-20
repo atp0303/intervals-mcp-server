@@ -1,0 +1,74 @@
+# Git and version control
+.git
+.gitignore
+.github
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache
+.coverage
+htmlcov
+.tox
+.nox
+.mypy_cache
+.ruff_cache
+
+# Virtual environments
+.venv
+venv
+env
+ENV
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Development tools
+.cursor
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files (except example)
+.env
+.env.local
+.env.production
+
+# Documentation
+docs/
+site/
+
+# Tests (not needed in production image)
+tests/
+
+# Pre-commit
+.pre-commit-config.yaml
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Other markdown files (but allow README.md)
+DOCKER.md
+DOCKERHUB.md
+AGENTS.md
+CONTRIBUTING.md
+LICENSE
+smithery.yaml

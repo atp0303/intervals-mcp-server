@@ -169,7 +169,61 @@ Once the server is running and Claude Desktop is configured, you can use the fol
 - `get_events`: Retrieve upcoming events (workouts, races, etc.)
 - `get_event_by_id`: Get detailed information for a specific event
 
+## Docker Setup
+
+This project includes comprehensive Docker support for easy deployment and development.
+
+### Quick Start with Docker
+
+1. **Build and run with Docker Compose:**
+   ```bash
+   # Start production service
+   docker-compose up --build
+   
+   # Start development service with hot reload
+   docker-compose --profile dev up --build intervals-mcp-server-dev
+   ```
+
+2. **Use the helper scripts:**
+   ```bash
+   # Linux/macOS
+   ./docker-helper.sh start
+   
+   # Windows
+   docker-helper.bat start
+   ```
+
+3. **View logs and manage services:**
+   ```bash
+   # View logs
+   docker-compose logs -f intervals-mcp-server
+   
+   # Stop services
+   docker-compose down
+   
+   # Run tests in container
+   docker-compose exec intervals-mcp-server-dev pytest
+   ```
+
+For detailed Docker documentation, see [DOCKER.md](DOCKER.md).
+
+### Docker Hub Images
+
+Pre-built images are available on Docker Hub:
+
+```bash
+# Pull the latest production image
+docker pull mvilanova/intervals-mcp-server:latest
+
+# Pull the development image
+docker pull mvilanova/intervals-mcp-server:dev
+```
+
+For Docker Hub deployment instructions, see [DOCKERHUB.md](DOCKERHUB.md).
+
 ## Development and testing
+
+### Local Development
 
 Install development dependencies and run the test suite with:
 
@@ -184,6 +238,24 @@ To start the server manually (useful when developing or testing), run:
 
 ```bash
 mcp run src/intervals_mcp_server/server.py
+```
+
+### Docker Development
+
+For development with Docker, use the development service:
+
+```bash
+# Start development container
+docker-compose --profile dev up --build intervals-mcp-server-dev
+
+# Run tests
+docker-compose exec intervals-mcp-server-dev pytest
+
+# Run linting
+docker-compose exec intervals-mcp-server-dev ruff .
+
+# Run type checking
+docker-compose exec intervals-mcp-server-dev mypy src tests
 ```
 
 ## License

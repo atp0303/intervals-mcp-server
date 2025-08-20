@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  intervals-mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: intervals-mcp-server
+    restart: unless-stopped
+    environment:
+      # These will be loaded from .env file or can be set directly
+      - API_KEY=${API_KEY}
+      - ATHLETE_ID=${ATHLETE_ID}
+      - INTERVALS_API_BASE_URL=${INTERVALS_API_BASE_URL:-https://intervals.icu/api/v1}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    env_file:
+      - .env
+    volumes:
+      # Mount source code for development (comment out for production)
+      - ./src:/app/src:ro
+    # For MCP stdio transport, we need to run interactively
+    stdin_open: true
+    tty: true
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; print('Health check passed')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # Development service with hot reload (optional)
+  intervals-mcp-server-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: intervals-mcp-server-dev
+    restart: unless-stopped
+    environment:
+      - API_KEY=${API_KEY}
+      - ATHLETE_ID=${ATHLETE_ID}
+      - INTERVALS_API_BASE_URL=${INTERVALS_API_BASE_URL:-https://intervals.icu/api/v1}
+      - LOG_LEVEL=${LOG_LEVEL:-DEBUG}
+    env_file:
+      - .env
+    volumes:
+      # Mount source code for hot reload
+      - ./src:/app/src
+      - ./pyproject.toml:/app/pyproject.toml
+    stdin_open: true
+    tty: true
+    profiles:
+      - dev
